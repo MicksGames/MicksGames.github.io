@@ -1,6 +1,6 @@
 (() => {
   const $ = id => document.getElementById(id);
-  const games = [];
+  const games = [], failed = [];
   const EXTRA = window.INLINE_GAMES || [];
   let cat = 'Alle', query = '', cur = null, token = 0;
   let favs = [];
@@ -13,7 +13,8 @@
     const s = document.createElement('script');
     s.src = 'Games/' + encodeURIComponent(folder) + '/game.js';
     s.dataset.folder = folder;
-    s.onload = s.onerror = () => { s.remove(); res(); };
+    s.onload = () => { s.remove(); res(); };
+    s.onerror = () => { failed.push(s.src); s.remove(); res(); };
     document.head.appendChild(s);
   });
 
@@ -58,7 +59,7 @@
     const q = query.trim().toLowerCase(), grid = $('grid'); grid.textContent = '';
     const list = games.filter(g => (cat === 'Alle' || (cat === 'Favoriten' ? favs.includes(g._folder) : g.category === cat)) && g.title.toLowerCase().includes(q));
     if (!list.length) { const d = document.createElement('div'); d.className = 'empty';
-      d.textContent = games.length ? 'Nichts gefunden. Ändere Suche oder Kategorie.' : 'Noch keine Spiele. Trage Ordner in Library/games.js ein.'; grid.appendChild(d); return; }
+      d.textContent = games.length ? 'Nichts gefunden. Ändere Suche oder Kategorie.' : (failed.length ? 'Nicht gefunden (404): ' + failed.join('  ') : (window.GAME_FOLDERS ? 'Noch keine Spiele. Trage Ordner in Library/games.js ein.' : 'Library/games.js wurde nicht geladen. Prüfe, ob die Datei im Ordner Library liegt und genau so heißt.')); grid.appendChild(d); return; }
     const f = document.createDocumentFragment(); list.forEach(g => f.appendChild(card(g))); grid.appendChild(f);
   }
 
