@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pixel Shelf – Meine Spielebibliothek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1 class="logo">PIXEL SHELF</h1>
+  <input id="search" type="search" placeholder="Spiel suchen" aria-label="Spiel suchen">
+</header>
+<main>
+  <section class="stage">
+    <div class="player">
+      <div class="frame" id="frame">
+        <iframe id="game" title="Spiel" allow="fullscreen; autoplay; gamepad" sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-forms"></iframe>
+        <div class="overlay" id="overlay">Wähle ein Spiel aus der Bibliothek.</div>
+      </div>
+      <button class="btn" id="fs" type="button" disabled>Vollbild</button>
+    </div>
+    <aside class="info" id="info">
+      <img id="i-thumb" alt="" hidden>
+      <h2 id="i-title">Kein Spiel gewählt</h2>
+      <p class="tag" id="i-cat"></p>
+      <p id="i-desc"></p>
+      <a class="btn" id="i-link" target="_blank" rel="noopener noreferrer" hidden>Website öffnen</a>
+    </aside>
+  </section>
+  <nav class="cats" id="cats" aria-label="Kategorien"></nav>
+  <section class="grid" id="grid" aria-live="polite"></section>
+</main>
+<script src="Library/games.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
