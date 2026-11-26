@@ -9,12 +9,16 @@
 <body>
 <header class="top">
   <a class="logo" href="#" id="logo"><i>&#10043;</i> MicksGames <em>~/games</em> <small id="count"></small></a>
-  <label class="search"><span class="sr">Suchen</span><b>&gt;</b><input id="search" type="search" placeholder="search games   ( / )" autocomplete="off"></label>
+  <div class="tools"><button class="tbtn" id="rand" type="button" title="Zufälliges Spiel (r)">$ ./random</button>
+  <label class="search"><span class="sr">Suchen</span><b>&gt;</b><input id="search" type="search" placeholder="search games   ( / )" autocomplete="off"></label></div>
 </header>
 
 <main id="home">
-  <nav class="cats" id="cats" aria-label="Kategorien"></nav>
+  <div id="hero" hidden></div>
+  <div class="row"><nav class="cats" id="cats" aria-label="Kategorien"></nav>
+  <label class="sortl"><span class="sr">Sortieren</span><select id="sort"><option value="default">sort: default</option><option value="az">sort: A–Z</option><option value="recent">sort: zuletzt gespielt</option><option value="most">sort: meistgespielt</option></select></label></div>
   <section class="grid" id="grid" aria-live="polite"></section>
+  <footer class="foot" id="foot"></footer>
 </main>
 
 <main id="play" hidden>
@@ -28,6 +32,7 @@
       <div class="bar">
         <button class="btn" id="fs" type="button">Vollbild</button>
         <button class="btn ghost" id="reload" type="button">Neu starten</button>
+        <button class="btn ghost" id="share" type="button">Link kopieren</button>
         <button class="btn ghost" id="fav" type="button" aria-pressed="false">Favorit</button>
       </div>
     </div>
@@ -35,6 +40,7 @@
       <h1 id="i-title"></h1>
       <p class="tag" id="i-cat"></p>
       <p id="i-desc"></p>
+      <p class="stats" id="i-stats"></p>
       <a class="btn ghost" id="i-link" target="_blank" rel="noopener noreferrer" hidden>Website öffnen</a>
     </aside>
   </div>
@@ -43,5 +49,6 @@
 </main>
 <script src="Library/games.js"></script>
 <script src="script.js"></script>
+<div class="toast" id="toast" role="status"></div>
 </body>
 </html>
