@@ -115,18 +115,25 @@
     $('more-h').hidden = !rel.length; rel.forEach(x => more.appendChild(card(x)));
     fit(); load(my);
   }
+  let errFor = 0;
+  function showError(my, url, why) {
+    errFor = my; const ov = $('overlay'), f = $('game');
+    f.src = 'about:blank';
+    ov.className = 'overlay err';
+    ov.textContent = 'Das Spiel konnte nicht geladen werden.\n\nGesuchter Pfad:\n' + url + '\n\n' + why + '\nPrüfe in game.js den Eintrag gameFile und die genaue Schreibweise der Ordner (Groß-/Kleinschreibung, Leerzeichen).';
+  }
   function load(my) {
     const g = cur, f = $('game'), ov = $('overlay');
-    ov.className = 'overlay load'; ov.textContent = '';
-    f.onload = () => { if (my === token) { ov.className = 'overlay done'; focusGame(); } };
+    errFor = 0; ov.className = 'overlay load'; ov.textContent = '';
+    // Fehler bleiben stehen: nach einem Fehler darf onload das Overlay nicht mehr ausblenden
+    f.onload = () => { if (my === token && errFor !== my) { ov.className = 'overlay done'; focusGame(); } };
     if (g.srcdoc) { f.removeAttribute('src'); f.srcdoc = g.srcdoc; return; }
     f.removeAttribute('srcdoc');
     const url = base(g) + g.gameFile;
     f.src = url; // sofort laden, Prüfung läuft parallel
-    if (location.protocol !== 'file:') fetch(url, { method: 'HEAD' }).then(r => { if (!r.ok) throw 0; }).catch(() => {
-      if (my !== token) return; f.src = 'about:blank';
-      ov.className = 'overlay err'; ov.textContent = 'Das Spiel konnte nicht geladen werden (' + url + '). Prüfe Ordnername und gameFile.';
-    });
+    if (location.protocol !== 'file:') fetch(url, { method: 'HEAD' }).then(r => {
+      if (my === token && !r.ok) showError(my, url, 'Antwort des Servers: ' + r.status + (r.status === 404 ? ' (Datei nicht gefunden)' : ''));
+    }, () => { if (my === token) showError(my, url, 'Der Server ist nicht erreichbar.'); });
   }
   // Kleine Fenster: Spiel in Mindesthöhe rendern und verkleinert anzeigen, damit nichts scrollt
   function fit() {

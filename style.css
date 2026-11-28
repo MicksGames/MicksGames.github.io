@@ -100,3 +100,4 @@ body:not(.playing){background-image:radial-gradient(rgba(217,119,87,.09) 1px,tra
 @media(max-width:700px){.hero::before{background:linear-gradient(0deg,rgba(22,20,18,.97),rgba(22,20,18,.45))}.hero-body{justify-content:flex-end;padding:20px}.row{flex-direction:column}.tbtn{display:none}.row .cats{width:100%}}
 @supports (height:100dvh){.frame{width:min(100%,calc((100dvh - 190px) * 16 / 9))}}
 .frame:fullscreen{width:100%!important;min-width:0}
+.overlay.err{white-space:pre-line;overflow:auto;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
