@@ -24,7 +24,7 @@
   const thumbSrc = g => /^(data:|https?:)/.test(g.thumbnail) ? g.thumbnail : base(g) + g.thumbnail;
   const norm = g => ({ title: String(g.title || g._folder), description: String(g.description || ''), category: String(g.category || 'Sonstiges'),
     website: String(g.website || ''), thumbnail: g.thumbnail || '', gameFile: g.gameFile || 'index.html', _folder: g._folder, srcdoc: g.srcdoc,
-    order: Number.isFinite(g.order) ? g.order : 1e9 });
+    order: Number.isFinite(g.order) ? g.order : 1e9, minHeight: Number(g.minHeight) || 0 });
   const hue = s => [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 360, 7);
   const st = g => stats[g._folder] || { plays: 0, last: 0, ms: 0 };
   const fmt = ms => { const m = Math.round(ms / 60000); return m < 1 ? '< 1 min' : m < 60 ? m + ' min' : Math.floor(m / 60) + ' h ' + (m % 60) + ' min'; };
@@ -113,7 +113,7 @@
     const more = $('more'); more.textContent = '';
     const rel = games.filter(x => x !== g).sort((a, b) => (b.category === g.category) - (a.category === g.category)).slice(0, 6);
     $('more-h').hidden = !rel.length; rel.forEach(x => more.appendChild(card(x)));
-    load(my);
+    fit(); load(my);
   }
   function load(my) {
     const g = cur, f = $('game'), ov = $('overlay');
@@ -128,6 +128,14 @@
       ov.className = 'overlay err'; ov.textContent = 'Das Spiel konnte nicht geladen werden (' + url + '). Prüfe Ordnername und gameFile.';
     });
   }
+  // Kleine Fenster: Spiel in Mindesthöhe rendern und verkleinert anzeigen, damit nichts scrollt
+  function fit() {
+    const f = $('game'), fr = $('frame'), mh = cur && cur.minHeight, W = fr.clientWidth, H = fr.clientHeight;
+    const s = mh && W && H ? Math.min(1, H / mh) : 1;
+    if (s >= 1) { f.style.width = f.style.height = f.style.transform = f.style.transformOrigin = ''; return; }
+    f.style.width = (W / s) + 'px'; f.style.height = mh + 'px'; f.style.transform = 'scale(' + s + ')'; f.style.transformOrigin = '0 0';
+  }
+  new ResizeObserver(fit).observe($('frame'));
   // Tastatur: iframe muss den Fokus haben, sonst bekommt das Spiel keine Tasten
   function focusGame() { const f = $('game'); try { f.focus(); f.contentWindow && f.contentWindow.focus(); } catch (e) {} }
   function stop() { endSession(); token++; cur = null; const f = $('game'); f.removeAttribute('srcdoc'); f.src = 'about:blank'; document.title = 'MicksGames'; }
