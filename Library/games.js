@@ -2,6 +2,7 @@
 window.GAME_FOLDERS = [
   "Blobbo-Hop",
   "Inkwild-Survivors",
-  "Skyflyer"
-  // , "WordLock", "Tumbler"
+  "Skyflyer",
+  "WrdLock"
+  // , "Tumbler"
 ];
