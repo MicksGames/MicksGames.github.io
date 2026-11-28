@@ -81,6 +81,8 @@
 
   function renderHome() {
     renderCats(); renderHero(!query && cat === 'Alle');
+    const w = $('warn'); w.hidden = !(failed.length && games.length);
+    if (!w.hidden) w.textContent = 'Nicht gefunden (404), Spiel wird nicht angezeigt:\n' + failed.join('\n') + '\nPrüfe, ob der Ordner hochgeladen ist und genau so geschrieben ist wie in Library/games.js.';
     const q = query.trim().toLowerCase(), grid = $('grid'); grid.textContent = '';
     let list = games.filter(g => (cat === 'Alle' || (cat === 'Favoriten' ? favs.includes(g._folder) : g.category === cat)) && g.title.toLowerCase().includes(q));
     if (sort === 'az') list.sort((a, b) => a.title.localeCompare(b.title));
