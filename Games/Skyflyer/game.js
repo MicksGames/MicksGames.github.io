@@ -4,6 +4,6 @@ registerGame({
   category: "Arcade", // zum Beispiel: Arcade, Survival, Puzzle, Jump n Run
   website: "", // noch keine Website, später hier eintragen
   thumbnail: "thumbnail.jpg", // optional: Bild 1280 x 720 neben diese Datei legen
-  gameFile: "Plain Website/index.html", // dein Ordner "Plain Website" mit index.html und Assets
+  gameFile: "PlaneWebsite/index.html", // dein Ordner "PlaneWebsite" mit index.html und Assets
   order: 3
 });
